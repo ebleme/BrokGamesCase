@@ -21,13 +21,7 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  playerAsset:
-    m_AssetGUID: 853737b8c5b408344b8cdfd081167525
-    m_SubObjectName: 
-    m_SubObjectGUID: 
-    m_SubObjectType: 
-    m_EditorAssetChanged: 1
   Id: Player 1
   moveSpeed: 4
-  sprintSpeed: 10
-  jumpPower: 12
+  sprintSpeed: 8
+  jumpPower: 1

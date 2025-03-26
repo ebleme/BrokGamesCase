@@ -78,7 +78,7 @@ namespace Ebleme
         {
             if (!JumpPressed)
             {
-                // OnJumpPressed?.Invoke();
+                OnJumpPressed?.Invoke();
             }
 
             JumpPressed = true;

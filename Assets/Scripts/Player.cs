@@ -26,7 +26,7 @@ namespace Ebleme
             
             playerMovement.SetMoveSpeed(preset.moveSpeed * upgradeData.moveSpeedMultiplier);
             playerMovement.SetSprintSpeed(preset.sprintSpeed * upgradeData.sprintSpeedMultiplier);
-            playerMovement.SetJumpHeight(preset.jumpPower * upgradeData.jumpPowerMultiplier);
+            playerMovement.SetJumpPower(preset.jumpPower * upgradeData.jumpPowerMultiplier);
         }
         
         private void Update()

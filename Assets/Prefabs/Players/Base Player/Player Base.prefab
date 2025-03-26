@@ -154,8 +154,9 @@ GameObject:
   - component: {fileID: 9189431581863304761}
   - component: {fileID: 1447815553591788804}
   - component: {fileID: 8684844481922112309}
+  - component: {fileID: 3250462033910374867}
   m_Layer: 0
-  m_Name: Player
+  m_Name: Player Base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -205,21 +206,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 4
   sprintSpeed: 6
-  rotationSpeed: 100
   speedChangeRate: 10
-  jumpHeight: 1.2
-  gravity: -15
-  jumpTimeout: 0.1
-  fallTimeout: 0.15
-  grounded: 1
-  groundedOffset: -0.2
-  groundedRadius: 0.5
-  groundLayers:
-    serializedVersion: 2
-    m_Bits: 1
-  cinemachineCameraTarget: {fileID: 8215000459581499850}
-  cameraTopClamp: 85
-  cameraBottomClamp: -85
+  jumpPower: 5
+  gravity: -9.81
 --- !u!143 &8684844481922112309
 CharacterController:
   m_ObjectHideFlags: 0
@@ -245,6 +234,22 @@ CharacterController:
   m_SkinWidth: 0.02
   m_MinMoveDistance: 0
   m_Center: {x: 0, y: 0.93, z: 0}
+--- !u!114 &3250462033910374867
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5989269323028398446}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dabed5df7a804689a9ca038bdfe91eff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rotationSpeed: 100
+  cinemachineCameraTarget: {fileID: 8215000459581499850}
+  cameraTopClamp: 90
+  cameraBottomClamp: -90
 --- !u!1 &8215000459581499850
 GameObject:
   m_ObjectHideFlags: 0
