@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace Ebleme.Utility {
 
     public class MoveableBillboard : Billboard {
@@ -5,7 +7,7 @@ namespace Ebleme.Utility {
 
         private void LateUpdate() {
             if (UpdateEnabled) {
-                UpdateBillboard();
+                UpdateBillboard(Time.deltaTime);
             }
         }
 

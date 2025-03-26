@@ -41,6 +41,15 @@ MonoBehaviour:
       isFolder: 0
       isAsset: 1
       _id: 1050130209
+    - globalId:
+        globalObjectIdString: GlobalObjectId_V1-3-f3904467f897a644e9fe20958ab4501a-11400000-0
+      _typeString: Ebleme.GameConfigs, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      _obj: {fileID: 11400000, guid: f3904467f897a644e9fe20958ab4501a, type: 2}
+      isSceneGameObject: 0
+      isFolder: 0
+      isAsset: 1
+      _id: 1025841569
     name: Page 1
     _id: 1063372424
   - items: []

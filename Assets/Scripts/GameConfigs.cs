@@ -12,6 +12,17 @@ namespace Ebleme
         [SerializeField]
         private float sceneTransitionDuration = 1f;
 
+        [FoldoutGroup("Interactable")]
+        [SerializeField]
+        private LayerMask interactableLayer;
+
+        [FoldoutGroup("Interactable")]
+        [SerializeField]
+        private float interactableDistance = 100f;
+        
         public float SceneTransitionDuration => sceneTransitionDuration;
+
+        public LayerMask InteractableLayer => interactableLayer;
+        public float InteractableDistance => interactableDistance;
     }
 }

@@ -149,13 +149,13 @@ namespace Ebleme
 
 		private void CameraRotation()
 		{
-			if (inputHandler.look.sqrMagnitude >= lookThreshold)
+			if (inputHandler.LookInput.sqrMagnitude >= lookThreshold)
 			{
 				//Don't multiply mouse input by Time.deltaTime
 				float deltaTimeMultiplier = IsCurrentDeviceMouse ? 1.0f : Time.deltaTime;
 
-				cinemachineTargetPitch += inputHandler.look.y * rotationSpeed * deltaTimeMultiplier;
-				rotationVelocity = inputHandler.look.x * rotationSpeed * deltaTimeMultiplier;
+				cinemachineTargetPitch += inputHandler.LookInput.y * rotationSpeed * deltaTimeMultiplier;
+				rotationVelocity = inputHandler.LookInput.x * rotationSpeed * deltaTimeMultiplier;
 
 				// clamp our pitch rotation
 				cinemachineTargetPitch = ClampAngle(cinemachineTargetPitch, cameraBottomClamp, cameraTopClamp);
@@ -170,14 +170,14 @@ namespace Ebleme
 
 		private void Move()
 		{
-			float targetSpeed = inputHandler.sprint ? sprintSpeed : moveSpeed;
+			var targetSpeed = inputHandler.SprintPressed ? sprintSpeed : moveSpeed;
 
-			if (inputHandler.move == Vector2.zero) targetSpeed = 0.0f;
+			if (inputHandler.MoveInput == Vector2.zero) targetSpeed = 0.0f;
 
-			float currentHorizontalSpeed = new Vector3(_controller.velocity.x, 0.0f, _controller.velocity.z).magnitude;
+			var currentHorizontalSpeed = new Vector3(_controller.velocity.x, 0.0f, _controller.velocity.z).magnitude;
 
-			float speedOffset = 0.1f;
-			float inputMagnitude = inputHandler.analogMovement ? inputHandler.move.magnitude : 1f;
+			var speedOffset = 0.1f;
+			var inputMagnitude = inputHandler.MoveInput.magnitude;
 
 			if (currentHorizontalSpeed < targetSpeed - speedOffset || currentHorizontalSpeed > targetSpeed + speedOffset)
 			{
@@ -192,14 +192,14 @@ namespace Ebleme
 			}
 
 			// normalise input direction
-			Vector3 inputDirection = new Vector3(inputHandler.move.x, 0.0f, inputHandler.move.y).normalized;
+			Vector3 inputDirection = new Vector3(inputHandler.MoveInput.x, 0.0f, inputHandler.MoveInput.y).normalized;
 
 			// note: Vector2's != operator uses approximation so is not floating point error prone, and is cheaper than magnitude
 			// if there is a move input rotate player when the player is moving
-			if (inputHandler.move != Vector2.zero)
+			if (inputHandler.MoveInput != Vector2.zero)
 			{
 				// move
-				inputDirection = transform.right * inputHandler.move.x + transform.forward * inputHandler.move.y;
+				inputDirection = transform.right * inputHandler.MoveInput.x + transform.forward * inputHandler.MoveInput.y;
 			}
 
 			// move the player
@@ -220,7 +220,7 @@ namespace Ebleme
 				}
 
 				// Jump
-				if (inputHandler.jump && jumpTimeoutDelta <= 0.0f)
+				if (inputHandler.JumpPressed && jumpTimeoutDelta <= 0.0f)
 				{
 					// the square root of H * -2 * G = how much velocity needed to reach desired height
 					verticalVelocity = Mathf.Sqrt(jumpHeight * -2f * gravity);
@@ -244,7 +244,7 @@ namespace Ebleme
 				}
 
 				// if we are not grounded, do not jump
-				inputHandler.jump = false;
+				inputHandler.JumpPressed = false;
 			}
 
 			// apply gravity over time if under terminal (multiply by delta time twice to linearly speed up over time)
