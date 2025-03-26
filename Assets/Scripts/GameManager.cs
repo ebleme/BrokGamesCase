@@ -2,7 +2,7 @@
 
 using Ebleme.Utility;
 
-namespace Ebleme.Garage
+namespace Ebleme
 {
     public class GameManager : SerializedSingleton<GameManager>
     {

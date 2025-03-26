@@ -27,7 +27,7 @@ namespace Ebleme.Garage
         {
             base.Awake();
             DontDestroyOnLoad(this);
-            fadeImage.SetActive(false);
+            fadeImage.gameObject.SetActive(false);
             blocker.SetActive(false);
         }
 
@@ -56,7 +56,7 @@ namespace Ebleme.Garage
                 {
                     if (!_isDuringTransition)
                     {
-                        yield return Constants.HalfSecondInterval;
+                        yield return new WaitForSeconds(.5f);
                         _isDuringTransition = true;
                         FadeIn(() =>
                         {
@@ -81,7 +81,7 @@ namespace Ebleme.Garage
             fadeImage.color = Color.clear;
             fadeImage.gameObject.SetActive(true);
             blocker.SetActive(true);
-            fadeImage.DOColor(Color.black, Constants.HalfSecond).OnComplete(() => onComplete?.Invoke());
+            fadeImage.DOColor(Color.black, .5f).OnComplete(() => onComplete?.Invoke());
         }
 
         private void FadeOut(float delay, Action onComplete = null)
@@ -94,7 +94,7 @@ namespace Ebleme.Garage
             if (delay <= 0)
             {
                 _isFadeIn = false;
-                fadeImage.DOColor(Color.clear, Constants.HalfSecond).OnComplete(() =>
+                fadeImage.DOColor(Color.clear, .5f).OnComplete(() =>
                 {
                     fadeImage.gameObject.SetActive(false);
                     blocker.SetActive(false);
@@ -104,7 +104,7 @@ namespace Ebleme.Garage
             }
 
             _isFadeIn = false;
-            fadeImage.DOColor(Color.clear, Constants.HalfSecond)
+            fadeImage.DOColor(Color.clear, .5f)
                 .SetDelay(delay)
                 .OnComplete(() =>
                 {

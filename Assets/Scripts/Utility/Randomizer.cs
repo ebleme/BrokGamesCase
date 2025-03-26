@@ -101,7 +101,7 @@ namespace Ebleme.Utility {
             return GetRandomNumber(0, 2) == 0;
         }
 
-        public static Quaternion GetRandomYRotation(float maxAngle = Constants.MaxEulerAnglesRotation) {
+        public static Quaternion GetRandomYRotation(float maxAngle = 360) {
             return Quaternion.AngleAxis(GetRandomNumber(0f, maxAngle), Vector3.up);
         }
 

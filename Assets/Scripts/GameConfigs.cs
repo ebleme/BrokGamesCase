@@ -3,7 +3,7 @@ using Ebleme.Utility;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-namespace Ebleme.Garage
+namespace Ebleme
 {
     [CreateAssetMenu(fileName = "GameConfigs", menuName = "Ebleme/GameConfigs", order = 0)]
     public class GameConfigs : SingletonScriptableObject<GameConfigs>

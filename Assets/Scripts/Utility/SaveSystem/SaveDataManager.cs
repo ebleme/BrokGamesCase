@@ -42,11 +42,11 @@ namespace Ebleme.SaveSystem {
         }
 
         private void Init() {
-            if (PlayerPrefs.GetString(Constants.PlayerPrefsVersionKey) != Version)
+            if (PlayerPrefs.GetString("PlayerPrefsVersion") != Version)
             {
                 Debug.Log("Removing all PlayerPrefs.");
                 PlayerPrefs.DeleteAll();
-                PlayerPrefs.SetString(Constants.PlayerPrefsVersionKey, Version);
+                PlayerPrefs.SetString("PlayerPrefsVersion", Version);
             }
             
             if (!usePlayerPrefs) {
