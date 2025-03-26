@@ -28,6 +28,6 @@ MonoBehaviour:
     m_SubObjectType: 
     m_EditorAssetChanged: 1
   Id: Player 3
-  moveSpeed: 4
-  sprintSpeed: 10
-  jumpPower: 12
+  moveSpeed: 50
+  sprintSpeed: 40
+  jumpPower: 20

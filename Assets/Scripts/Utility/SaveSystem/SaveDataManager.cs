@@ -95,14 +95,6 @@ namespace Ebleme.SaveSystem {
         }
 
         #endregion
-        
-        public static bool IsTutorialCompleted(string tutorialId) {
-            return SaveData.IsTutorialCompleted(tutorialId);
-        }
-
-        public static void MarkTutorialAsCompleted(string tutorialId) {
-            SaveData.MarkTutorialAsCompleted(tutorialId);
-            Save();
-        }
+      
     }
 }

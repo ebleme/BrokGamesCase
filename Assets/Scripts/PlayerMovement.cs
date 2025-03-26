@@ -1,9 +1,6 @@
 // maebleme2
 
-using System;
-using StarterAssets;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace Ebleme
 {
@@ -247,6 +244,21 @@ namespace Ebleme
 
             // when selected, draw a gizmo in the position of, and matching radius of, the grounded collider
             Gizmos.DrawSphere(new Vector3(transform.position.x, transform.position.y - groundedOffset, transform.position.z), groundedRadius);
+        }
+
+        public void SetMoveSpeed(float moveSpeed)
+        {
+            this.moveSpeed = moveSpeed;
+        }
+        
+        public void SetSprintSpeed(float sprintSpeed)
+        {
+            this.sprintSpeed = sprintSpeed;
+        }
+        
+        public void SetJumpHeight(float jumpHeight)
+        {
+            this.jumpHeight = jumpHeight;
         }
     }
 }

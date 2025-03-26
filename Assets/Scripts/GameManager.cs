@@ -1,6 +1,10 @@
 // maebleme2
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using Ebleme.Models;
+using Ebleme.SaveSystem;
 using Ebleme.ScrictableObjects;
 using Ebleme.Utility;
 using Unity.Cinemachine;
@@ -16,6 +20,7 @@ namespace Ebleme
         private CinemachineCamera cinemachineCamera;
 
         public Player CurrentPlayer { get; private set; }
+        public PlayerPreset CurrentPlayerPreset { get; private set; }
         public bool cursorLocked = true;
 
         protected override void Awake()
@@ -54,7 +59,11 @@ namespace Ebleme
                     SetCursorState(true);
                     var newPlayer = Instantiate(handle.Result);
                     newPlayer.transform.position = pos;
+                    
+                    CurrentPlayerPreset = playerPreset;
+                    
                     CurrentPlayer = newPlayer.GetComponent<Player>();
+                    CurrentPlayer.Set(playerPreset);
 
                     cinemachineCamera.Target.TrackingTarget = CurrentPlayer.CameraFollowPoint;
 
@@ -62,5 +71,34 @@ namespace Ebleme
                 }
             };
         }
+
+        #region PlayerUpgrades
+
+        public void UpgradePlayer(PlayerUpgradeData playerUpgradeData)
+        {
+            var upgradeData = SaveDataManager.SaveData.PlayerUpgrades.SingleOrDefault(p => p.Id == playerUpgradeData.Id);
+
+            if (upgradeData != null)
+                SaveDataManager.SaveData.PlayerUpgrades.Remove(upgradeData);
+
+            SaveDataManager.SaveData.PlayerUpgrades.Add(playerUpgradeData);
+        }
+
+        public PlayerUpgradeData GetPlayerUpgradeData(string id)
+        {
+            return SaveDataManager.SaveData.PlayerUpgrades.SingleOrDefault(p => p.Id == id);
+        }
+        
+        public PlayerUpgradeData GetCurrrentPlayeerUpgradeData()
+        {
+            return GetPlayerUpgradeData(CurrentPlayerPreset.Id);
+        }
+        
+        public List<PlayerUpgradeData> GetAllPlayeerUpgradeDatas()
+        {
+            return SaveDataManager.SaveData.PlayerUpgrades;
+        }
+
+        #endregion
     }
 }

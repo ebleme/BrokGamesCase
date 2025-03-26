@@ -2,6 +2,8 @@
 
 using System;
 using Ebleme.Interactables;
+using Ebleme.Models;
+using Ebleme.ScrictableObjects;
 using UnityEngine;
 
 namespace Ebleme
@@ -13,6 +15,20 @@ namespace Ebleme
         
         private InteractableBase currentInteractableBase;
 
+
+        public void Set(PlayerPreset preset)
+        {
+            var playerMovement = GetComponent<PlayerMovement>();
+            var upgradeData = GameManager.Instance.GetPlayerUpgradeData(preset.Id);
+
+            if (upgradeData == null)
+                upgradeData = new PlayerUpgradeData();
+            
+            playerMovement.SetMoveSpeed(preset.moveSpeed * upgradeData.moveSpeedMultiplier);
+            playerMovement.SetSprintSpeed(preset.sprintSpeed * upgradeData.sprintSpeedMultiplier);
+            playerMovement.SetJumpHeight(preset.jumpPower * upgradeData.jumpPowerMultiplier);
+        }
+        
         private void Update()
         {
             CheckInteractable();
@@ -23,7 +39,6 @@ namespace Ebleme
             var camTr = Camera.main.transform;
             var ray = new Ray(camTr.position, camTr.forward);
 
-
             RaycastHit hit;
 
             if (Physics.Raycast(ray, out hit, GameConfigs.Instance.InteractableDistance, GameConfigs.Instance.InteractableLayer))
@@ -33,9 +48,7 @@ namespace Ebleme
                 if (interactableBase != null)
                 {
                     if (currentInteractableBase != null & currentInteractableBase != interactableBase)
-                    {
                         currentInteractableBase.Defocuse();
-                    }
 
                     currentInteractableBase = interactableBase;
                     interactableBase.Focuse();
