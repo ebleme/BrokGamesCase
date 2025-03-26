@@ -1,5 +1,6 @@
 // maebleme2
 
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -14,30 +15,93 @@ namespace Ebleme
         public Vector2 LookInput { get; private set; }
         public bool InteractPressed { get; private set; }
         public bool JumpPressed { get; set; }
+        public bool JumpPressedDown { get; private set; }
         public bool SprintPressed { get; private set; }
+
+        public event Action OnJumpPressed;
+
 
         private void Awake()
         {
             inputs = new PlayerInputs();
-        
-            // Hareket
-            inputs.Player.Move.performed += ctx => MoveInput = ctx.ReadValue<Vector2>();
-            inputs.Player.Move.canceled += ctx => MoveInput = Vector2.zero;
 
-            // Bakış (Mouse veya Gamepad Right Stick)
-            inputs.Player.Look.performed += ctx => LookInput = ctx.ReadValue<Vector2>();
-            inputs.Player.Look.canceled += ctx => LookInput = Vector2.zero;
+            inputs.Player.Move.performed += OnMovePerformed;
+            inputs.Player.Move.canceled += OnMovePerformed;
 
-            // Etkileşim (E veya Gamepad X)
-            inputs.Player.Interact.started += ctx => InteractPressed = true;
-            inputs.Player.Interact.canceled += ctx => InteractPressed = false;
+            inputs.Player.Look.performed += OnLookPerformed;
+            inputs.Player.Look.canceled += OnLookPerformed;
 
-            // Zıplama (Space veya Gamepad A)
-            inputs.Player.Jump.started += ctx => JumpPressed = true;
-            inputs.Player.Jump.canceled += ctx => JumpPressed = false;  
-            
-            inputs.Player.Sprint.started += ctx => SprintPressed = true;
-            inputs.Player.Sprint.canceled += ctx => SprintPressed = false;
+            inputs.Player.Interact.started += OnInteractStarted;
+            inputs.Player.Interact.canceled += OnInteractCanceled;
+
+            inputs.Player.Jump.started += OnJumpStarted;
+            inputs.Player.Jump.canceled += OnJumpCanceled;
+
+            inputs.Player.Sprint.started += OnSprintStarted;
+            inputs.Player.Sprint.canceled += OnSprintCanceled;
+        }
+
+        private void OnDestroy()
+        {
+            inputs.Player.Move.performed -= OnMovePerformed;
+            inputs.Player.Move.canceled -= OnMovePerformed;
+
+            inputs.Player.Look.performed -= OnLookPerformed;
+            inputs.Player.Look.canceled -= OnLookPerformed;
+
+            inputs.Player.Interact.started -= OnInteractStarted;
+            inputs.Player.Interact.canceled -= OnInteractCanceled;
+
+            inputs.Player.Jump.started -= OnJumpStarted;
+            inputs.Player.Jump.canceled -= OnJumpCanceled;
+
+            inputs.Player.Sprint.started -= OnSprintStarted;
+            inputs.Player.Sprint.canceled -= OnSprintCanceled;
+        }
+
+        private void OnSprintCanceled(InputAction.CallbackContext ctx)
+        {
+            SprintPressed = false;
+        }
+
+        private void OnSprintStarted(InputAction.CallbackContext ctx)
+        {
+            SprintPressed = true;
+        }
+
+        private void OnJumpCanceled(InputAction.CallbackContext ctx)
+        {
+            JumpPressed = false;
+        }
+
+        private void OnJumpStarted(InputAction.CallbackContext ctx)
+        {
+            if (!JumpPressed)
+            {
+                // OnJumpPressed?.Invoke();
+            }
+
+            JumpPressed = true;
+        }
+
+        private void OnInteractCanceled(InputAction.CallbackContext ctx)
+        {
+            InteractPressed = false;
+        }
+
+        private void OnInteractStarted(InputAction.CallbackContext ctx)
+        {
+            InteractPressed = true;
+        }
+
+        private void OnLookPerformed(InputAction.CallbackContext ctx)
+        {
+            LookInput = ctx.ReadValue<Vector2>();
+        }
+
+        private void OnMovePerformed(InputAction.CallbackContext ctx)
+        {
+            MoveInput = ctx.ReadValue<Vector2>();
         }
 
         private void OnEnable()
@@ -49,8 +113,8 @@ namespace Ebleme
         {
             inputs.Disable();
         }
-        
-        
+
+
         /*
         [Header("Character Input Values")]
         public Vector2 move;

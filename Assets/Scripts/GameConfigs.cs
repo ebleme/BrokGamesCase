@@ -17,12 +17,21 @@ namespace Ebleme
         private LayerMask interactableLayer;
 
         [FoldoutGroup("Interactable")]
-        [SerializeField]
+        [SerializeField] 
         private float interactableDistance = 100f;
+
+
+        [FoldoutGroup("Addressable")]
+        [SerializeField]
+        private string playerPresetsLabel = "PlayerPresets";
+        
         
         public float SceneTransitionDuration => sceneTransitionDuration;
 
         public LayerMask InteractableLayer => interactableLayer;
         public float InteractableDistance => interactableDistance;
+
+        public string PlayerPresetsLabel => playerPresetsLabel;
+
     }
 }
