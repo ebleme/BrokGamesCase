@@ -103,7 +103,9 @@ namespace Ebleme
         private void Start()
         {
             _controller = GetComponent<CharacterController>();
-            inputHandler = GetComponent<InputHandler>();
+            
+            // Todo: User inject
+            inputHandler = FindFirstObjectByType<InputHandler>();
 
             // reset our timeouts on start
             jumpTimeoutDelta = jumpTimeout;

@@ -8,6 +8,9 @@ namespace Ebleme
 {
     public class Player : MonoBehaviour
     {
+        [SerializeField]
+        private Transform cameraFollowPoint;
+        
         private InteractableBase currentInteractableBase;
 
         private void Update()
@@ -48,5 +51,8 @@ namespace Ebleme
                 Debug.DrawRay(ray.origin, ray.direction * GameConfigs.Instance.InteractableDistance, Color.red);
             }
         }
+        
+        public Transform CameraFollowPoint => cameraFollowPoint;
+
     }
 }

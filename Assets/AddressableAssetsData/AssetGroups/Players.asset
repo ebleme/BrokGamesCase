@@ -16,19 +16,19 @@ MonoBehaviour:
   m_GUID: 22517a8f48e222f47b5489f65e8beacd
   m_SerializeEntries:
   - m_GUID: 53193c3caec643d458fcbceeb0547b65
-    m_Address: Player2
+    m_Address: Player 2
     m_ReadOnly: 0
     m_SerializedLabels:
     - Player
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 7be263e4f53668c449d0980e4cd5999e
-    m_Address: Player3
+    m_Address: Player 3
     m_ReadOnly: 0
     m_SerializedLabels:
     - Player
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 853737b8c5b408344b8cdfd081167525
-    m_Address: Player1
+    m_Address: Player 1
     m_ReadOnly: 0
     m_SerializedLabels:
     - Player

@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using DG.Tweening;
 using Ebleme.ScrictableObjects;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -17,17 +18,43 @@ namespace Ebleme.UI
         [SerializeField]
         private Transform content;
 
+        [SerializeField]
+        private Canvas canvas;
+
+        [SerializeField]
+        private CanvasGroup canvasGroup;
+        
+        
         private List<PlayerPreset> presets;
 
         void Start()
         {
             presets = new List<PlayerPreset>();
             LoadAllAssetsByLabel(GameConfigs.Instance.PlayerPresetsLabel);
-            
-            
         }
 
-        void LoadAllAssetsByLabel(string label)
+        public void Show()
+        {
+            canvasGroup.alpha = 0;
+            canvas.gameObject.SetActive(true);
+
+            canvasGroup.DOFade(1, 0.25f);
+            
+            GameManager.Instance.SetCursorState(false);
+        }
+
+        public void Hide()
+        {
+            canvasGroup.alpha = 1;
+
+            canvasGroup.DOFade(0, 0.25f).OnComplete(() =>
+            {
+                canvas.gameObject.SetActive(true);
+                GameManager.Instance.SetCursorState(true);
+            });
+        }
+
+        private void LoadAllAssetsByLabel(string label)
         {
             Addressables.LoadResourceLocationsAsync(label).Completed += handle =>
             {
@@ -73,6 +100,9 @@ namespace Ebleme.UI
         private void OnChoosed(PlayerPreset preset)
         {
             Debug.Log($"Choosed: {preset.Id}");
+
+           GameManager.Instance.SetCurrentPlayer(preset, Hide);
+
         }
     }
 }
