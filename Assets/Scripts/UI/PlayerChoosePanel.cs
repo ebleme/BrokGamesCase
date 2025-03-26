@@ -31,6 +31,8 @@ namespace Ebleme.UI
         {
             presets = new List<PlayerPreset>();
             LoadAllAssetsByLabel(GameConfigs.Instance.PlayerPresetsLabel);
+            
+            Show();
         }
 
         public void Show()
@@ -49,7 +51,7 @@ namespace Ebleme.UI
 
             canvasGroup.DOFade(0, 0.25f).OnComplete(() =>
             {
-                canvas.gameObject.SetActive(true);
+                canvas.gameObject.SetActive(false);
                 GameManager.Instance.SetCursorState(true);
             });
         }

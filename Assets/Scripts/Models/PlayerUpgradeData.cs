@@ -4,16 +4,17 @@ namespace Ebleme.Models
 {
     public class PlayerUpgradeData
     {
-        public string Id;
+        public string id;
         public float moveSpeedMultiplier;
         public float sprintSpeedMultiplier;
         public float jumpPowerMultiplier;
 
-        public PlayerUpgradeData()
+        public PlayerUpgradeData(string id)
         {
-            moveSpeedMultiplier = 0;
-            sprintSpeedMultiplier = 0;
-            jumpPowerMultiplier = 0;
+            this.id = id;
+            moveSpeedMultiplier = 1;
+            sprintSpeedMultiplier = 1;
+            jumpPowerMultiplier = 1;
         }
     }
 }

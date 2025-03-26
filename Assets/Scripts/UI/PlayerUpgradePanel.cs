@@ -3,12 +3,23 @@
 using System;
 using DG.Tweening;
 using Ebleme.Models;
+using TMPro;
 using UnityEngine;
 
 namespace Ebleme.UI
 {
     public class PlayerUpgradePanel : MonoBehaviour
     {
+        [SerializeField]
+        private TMP_Text moveSpeedText;
+
+        [SerializeField]
+        private TMP_Text sprintSpeedText;
+        
+        [SerializeField]
+        private TMP_Text jumpPowerSpeedText;
+        
+        [Space]
         [SerializeField]
         private Canvas canvas;
 
@@ -17,7 +28,6 @@ namespace Ebleme.UI
 
         private void Start()
         {
-            Hide();
         }
 
         public void Show()
@@ -28,6 +38,18 @@ namespace Ebleme.UI
             canvasGroup.DOFade(1, 0.25f);
             
             GameManager.Instance.SetCursorState(false);
+            
+            
+            // Write Upgrade data
+            var currentUpgradeData = GetActiveUpgradeData();
+
+            if (currentUpgradeData == null)
+                currentUpgradeData = new PlayerUpgradeData(GameManager.Instance.CurrentPlayerPreset.Id);
+            
+            
+            moveSpeedText.text = currentUpgradeData.moveSpeedMultiplier.ToString();
+            sprintSpeedText.text = currentUpgradeData.sprintSpeedMultiplier.ToString();
+            jumpPowerSpeedText.text = currentUpgradeData.jumpPowerMultiplier.ToString();
         }
 
         public void Hide()
@@ -36,7 +58,7 @@ namespace Ebleme.UI
 
             canvasGroup.DOFade(0, 0.25f).OnComplete(() =>
             {
-                canvas.gameObject.SetActive(true);
+                canvas.gameObject.SetActive(false);
                 GameManager.Instance.SetCursorState(true);
             });
         }
@@ -46,7 +68,7 @@ namespace Ebleme.UI
             var upgradeData = GameManager.Instance.GetCurrrentPlayeerUpgradeData();
             
             if (upgradeData == null)
-                upgradeData = new PlayerUpgradeData();
+                upgradeData = new PlayerUpgradeData(GameManager.Instance.CurrentPlayerPreset.Id);
 
             return upgradeData;
         }
@@ -55,8 +77,10 @@ namespace Ebleme.UI
         {
             var currentUpgradeData = GetActiveUpgradeData();
             currentUpgradeData.moveSpeedMultiplier++;
-            
+
             GameManager.Instance.UpgradePlayer(currentUpgradeData);
+           
+            Hide();
         }
         
         public void UpgradeSprintSpeed()
@@ -65,6 +89,8 @@ namespace Ebleme.UI
             currentUpgradeData.sprintSpeedMultiplier++;
             
             GameManager.Instance.UpgradePlayer(currentUpgradeData);
+           
+            Hide();
         }
         
         public void UpgradeJumpPower()
@@ -73,6 +99,8 @@ namespace Ebleme.UI
             currentUpgradeData.jumpPowerMultiplier++;
             
             GameManager.Instance.UpgradePlayer(currentUpgradeData);
+            
+            Hide();
         }
     }
 }

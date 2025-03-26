@@ -22,7 +22,7 @@ namespace Ebleme
             var upgradeData = GameManager.Instance.GetPlayerUpgradeData(preset.Id);
 
             if (upgradeData == null)
-                upgradeData = new PlayerUpgradeData();
+                upgradeData = new PlayerUpgradeData(GameManager.Instance.CurrentPlayerPreset.Id);
             
             playerMovement.SetMoveSpeed(preset.moveSpeed * upgradeData.moveSpeedMultiplier);
             playerMovement.SetSprintSpeed(preset.sprintSpeed * upgradeData.sprintSpeedMultiplier);
