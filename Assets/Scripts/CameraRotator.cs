@@ -2,6 +2,7 @@
 
 using System;
 using UnityEngine;
+using Zenject;
 
 namespace Ebleme
 {
@@ -23,15 +24,9 @@ namespace Ebleme
         private const float lookThreshold = 0.01f;
         private float rotationVelocity;
 
-        
+        [Inject]
         private InputHandler inputHandler;
         
-        private void Start()
-        {
-            inputHandler = FindFirstObjectByType<InputHandler>();
-
-        }
-
         private void LateUpdate()
         {
             CameraRotation();

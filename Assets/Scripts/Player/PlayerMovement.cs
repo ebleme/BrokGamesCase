@@ -5,35 +5,21 @@ namespace Ebleme
 {
     public class PlayerMovement : MonoBehaviour
     {
-        private float moveSpeed = 4.0f;
-        private float sprintSpeed = 6.0f;
+        private float jumpPower { get; set; }
+        private float moveSpeed { get; set; }
+        private float sprintSpeed { get; set; }
 
-        [Space(10)]
-        [SerializeField]
-        private float jumpPower = 5f;
-
-        [SerializeField]
-        private float gravity = -15.0f;
-
-        // player
-
+        
+        // Privates
         private float speed;
         private float verticalVelocity;
 
 
         private CharacterController characterController;
 
+        [Inject]
         private InputHandler inputHandler;
         
-        [Inject]
-        private void Construct(InputHandler inputHandler)
-        {
-            this.inputHandler = inputHandler;
-
-            Debug.Log("zenject setup");
-        }
-        
-
         private void Start()
         {
             characterController = GetComponent<CharacterController>();
@@ -57,15 +43,6 @@ namespace Ebleme
         }
 
         private bool IsGrounded => characterController.isGrounded;
-
-        // private void GroundedCheck()
-        // {
-        //     // set sphere position, with offset
-        //     // Vector3 spherePosition = new Vector3(transform.position.x, transform.position.y - groundedOffset, transform.position.z);
-        //     // grounded = Physics.CheckSphere(spherePosition, groundedRadius, groundLayers, QueryTriggerInteraction.Ignore);
-        //
-        //   grounded =  Physics.Raycast(transform.position, Vector3.down, groundedOffset, groundLayers);
-        // }
 
         private void Move()
         {
@@ -124,7 +101,7 @@ namespace Ebleme
             }
             else
             {
-                verticalVelocity += gravity * Time.deltaTime;
+                verticalVelocity += GameConfigs.Instance.Gravity * Time.deltaTime;
             }
         }
 

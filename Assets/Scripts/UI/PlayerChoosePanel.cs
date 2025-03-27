@@ -1,14 +1,14 @@
 // maebleme2
 
-using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using DG.Tweening;
 using Ebleme.ScrictableObjects;
+using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using Zenject;
-using Zenject.SpaceFighter;
 
 namespace Ebleme.UI
 {
@@ -26,20 +26,20 @@ namespace Ebleme.UI
         [SerializeField]
         private CanvasGroup canvasGroup;
 
-
         private List<PlayerPreset> presets;
 
         private PlayerSpawner playerSpawner;
+        private GameManager gameManager;
 
         [Inject]
-        private void Construct(PlayerSpawner enemySpawner)
+        private void Construct(PlayerSpawner enemySpawner, GameManager gameManager)
         {
             this.playerSpawner = enemySpawner;
+            this.gameManager = gameManager;
         }
 
-        void Start()
+        async void Start()
         {
-            presets = new List<PlayerPreset>();
             LoadAllAssetsByLabel(GameConfigs.Instance.PlayerPresetsLabel);
 
             Show();
@@ -52,7 +52,7 @@ namespace Ebleme.UI
 
             canvasGroup.DOFade(1, 0.25f);
 
-            GameManager.Instance.SetCursorState(false);
+            gameManager.SetCursorState(false);
         }
 
         public void Hide()
@@ -62,7 +62,7 @@ namespace Ebleme.UI
             canvasGroup.DOFade(0, 0.25f).OnComplete(() =>
             {
                 canvas.gameObject.SetActive(false);
-                GameManager.Instance.SetCursorState(true);
+                gameManager.SetCursorState(true);
             });
         }
 

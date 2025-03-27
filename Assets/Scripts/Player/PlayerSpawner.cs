@@ -13,6 +13,8 @@ namespace Ebleme
         [Inject]
         private IPlayerFactory playerFactory;
 
+        [Inject]
+        private GameManager gameManager;
 
         public Player CurrentPlayer { get; private set; }
         public PlayerPreset CurrentPlayerPreset { get; private set; }
@@ -32,14 +34,14 @@ namespace Ebleme
             CurrentPlayerPreset = playerPreset;
             CurrentPlayer = newPlayer.GetComponent<Player>();
 
-            GameManager.Instance.CurrentPlayer = CurrentPlayer;
-            GameManager.Instance.CurrentPlayerPreset= CurrentPlayerPreset;
+            gameManager.CurrentPlayer = CurrentPlayer;
+            gameManager.CurrentPlayerPreset= CurrentPlayerPreset;
             
             
             CurrentPlayer.Set(CurrentPlayerPreset);
 
-            GameManager.Instance.SetCinemachineFollowTarget(CurrentPlayer.CameraFollowPoint);
-            GameManager.Instance.SetCursorState(true);
+            gameManager.SetCinemachineFollowTarget(CurrentPlayer.CameraFollowPoint);
+            gameManager.SetCursorState(true);
             onLoaded?.Invoke();
         }
     }

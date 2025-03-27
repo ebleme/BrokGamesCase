@@ -16,11 +16,13 @@ namespace Ebleme
         
         private InteractableBase currentInteractableBase;
 
+        [Inject]
+        private GameManager gameManager;
 
         public void Set(PlayerPreset preset)
         {
             var playerMovement = GetComponent<PlayerMovement>();
-            var upgradeData = GameManager.Instance.GetPlayerUpgradeData(preset.Id);
+            var upgradeData = gameManager.GetPlayerUpgradeData(preset.Id);
 
             if (upgradeData == null)
                 upgradeData = new PlayerUpgradeData(preset.Id);

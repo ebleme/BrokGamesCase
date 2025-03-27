@@ -11,7 +11,12 @@ namespace Ebleme
         [FoldoutGroup("General Configs")]
         [SerializeField]
         private float sceneTransitionDuration = 1f;
+        
+        [FoldoutGroup("General Configs")]
+        [SerializeField]
+        private float gravity = -9.07f;
 
+        
         [FoldoutGroup("Interactable")]
         [SerializeField]
         private LayerMask interactableLayer;
@@ -32,6 +37,8 @@ namespace Ebleme
         public float InteractableDistance => interactableDistance;
 
         public string PlayerPresetsLabel => playerPresetsLabel;
+
+        public float Gravity => gravity;
 
     }
 }
