@@ -13,7 +13,7 @@ namespace Ebleme
     {
         [SerializeField]
         private Transform cameraFollowPoint;
-        
+
         private InteractableBase currentInteractableBase;
 
         [Inject]
@@ -26,12 +26,14 @@ namespace Ebleme
 
             if (upgradeData == null)
                 upgradeData = new PlayerUpgradeData(preset.Id);
-            
-            playerMovement.SetMoveSpeed(preset.moveSpeed * upgradeData.moveSpeedMultiplier);
-            playerMovement.SetSprintSpeed(preset.sprintSpeed * upgradeData.sprintSpeedMultiplier);
-            playerMovement.SetJumpPower(preset.jumpPower * upgradeData.jumpPowerMultiplier);
+
+
+            playerMovement.SetUpgradeData(upgradeData);
+            playerMovement.SetMoveSpeed(preset.moveSpeed);
+            playerMovement.SetSprintSpeed(preset.sprintSpeed);
+            playerMovement.SetJumpPower(preset.jumpPower);
         }
-        
+
         private void Update()
         {
             CheckInteractable();
@@ -67,8 +69,7 @@ namespace Ebleme
                 Debug.DrawRay(ray.origin, ray.direction * GameConfigs.Instance.InteractableDistance, Color.red);
             }
         }
-        
-        public Transform CameraFollowPoint => cameraFollowPoint;
 
+        public Transform CameraFollowPoint => cameraFollowPoint;
     }
 }

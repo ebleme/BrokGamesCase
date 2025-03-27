@@ -1,123 +1,90 @@
+using Ebleme;
+using Ebleme.Models;
+using Ebleme.MovementStrategy;
 using UnityEngine;
 using Zenject;
 
-namespace Ebleme
+public class PlayerMovement : MonoBehaviour
 {
-    public class PlayerMovement : MonoBehaviour
+    private CharacterController characterController;
+    private MovementStateMachine stateMachine;
+
+    private float jumpPower;
+    private float moveSpeed;
+    private float sprintSpeed;
+    private float verticalVelocity;
+
+    [Inject] private InputHandler inputHandler;
+
+    private PlayerUpgradeData upgradeData;
+    
+    private void Awake()
     {
-        private float jumpPower { get; set; }
-        private float moveSpeed { get; set; }
-        private float sprintSpeed { get; set; }
+        characterController = GetComponent<CharacterController>();
+        stateMachine = new MovementStateMachine();
 
-        
-        // Privates
-        private float speed;
-        private float verticalVelocity;
+        stateMachine.SetState(new IdleState(), this);
+    }
 
+    private void Start()
+    {
+        inputHandler.OnJumpPressed += Jump;
+    }
 
-        private CharacterController characterController;
+    private void OnDestroy()
+    {
+        inputHandler.OnJumpPressed -= Jump;
+    }
 
-        [Inject]
-        private InputHandler inputHandler;
-        
-        private void Start()
+    private void Update()
+    {
+        ApplyGravity();
+        stateMachine.UpdateState(this);
+    }
+
+    public void SetUpgradeData(PlayerUpgradeData data) => upgradeData = data;
+    public void SetMoveSpeed(float moveSpeed) => this.moveSpeed = moveSpeed;
+    public void SetSprintSpeed(float sprintSpeed) => this.sprintSpeed = sprintSpeed;
+    public void SetJumpPower(float jumpPower) => this.jumpPower = jumpPower;
+
+    public float GetMoveSpeed() => moveSpeed * upgradeData.moveSpeedMultiplier;
+    public float GetSprintSpeed() => sprintSpeed * upgradeData.sprintSpeedMultiplier;
+    public float GetJumpPower() => jumpPower * upgradeData.jumpPowerMultiplier;
+
+    public bool IsGrounded => characterController.isGrounded;
+    public CharacterController Controller => characterController;
+    public InputHandler InputHandler => inputHandler;
+
+    private void Jump()
+    {
+        if (IsGrounded)
         {
-            characterController = GetComponent<CharacterController>();
-
-            // Todo: User inject
-            // inputHandler = FindFirstObjectByType<InputHandler>();
-
-            inputHandler.OnJumpPressed += Jump;
+            stateMachine.SetState(new JumpState(), this);
         }
+    }
 
-        private void OnDestroy()
+    private void ApplyGravity()
+    {
+        if (IsGrounded && verticalVelocity < 0.0f)
         {
-            inputHandler.OnJumpPressed -= Jump;
+            verticalVelocity = -2f;
         }
-
-        private void Update()
+        else
         {
-            // JumpAndGravity();
-            ApplyGravity();
-            Move();
+            verticalVelocity += GameConfigs.Instance.Gravity * Time.deltaTime;
         }
+    }
 
-        private bool IsGrounded => characterController.isGrounded;
+    public void Move(Vector3 direction, float speed)
+    {
+        characterController.Move(direction * (speed * Time.deltaTime) + Vector3.up * (verticalVelocity * Time.deltaTime));
+    }
 
-        private void Move()
-        {
-            var targetSpeed = inputHandler.SprintPressed ? sprintSpeed : moveSpeed;
-
-            if (inputHandler.MoveInput == Vector2.zero) targetSpeed = 0.0f;
-
-            var currentHorizontalSpeed = new Vector3(characterController.velocity.x, 0.0f, characterController.velocity.z).magnitude;
-
-            var speedOffset = 0.1f;
-            var inputMagnitude = inputHandler.MoveInput.magnitude;
-
-            if (currentHorizontalSpeed < targetSpeed - speedOffset || currentHorizontalSpeed > targetSpeed + speedOffset)
-            {
-                speed = Mathf.Lerp(currentHorizontalSpeed, targetSpeed * inputMagnitude, Time.deltaTime);
-
-                // round speed to 3 decimal places
-                speed = Mathf.Round(speed * 1000f) / 1000f;
-            }
-            else
-            {
-                speed = targetSpeed;
-            }
-
-            // normalise input direction
-            Vector3 inputDirection = new Vector3(inputHandler.MoveInput.x, 0.0f, inputHandler.MoveInput.y).normalized;
-
-            // note: Vector2's != operator uses approximation so is not floating point error prone, and is cheaper than magnitude
-            // if there is a move input rotate player when the player is moving
-            if (inputHandler.MoveInput != Vector2.zero)
-            {
-                // move
-                inputDirection = transform.right * inputHandler.MoveInput.x + transform.forward * inputHandler.MoveInput.y;
-            }
-
-            // move the player
-            characterController.Move(inputDirection.normalized * (speed * Time.deltaTime) + new Vector3(0.0f, verticalVelocity, 0.0f) * Time.deltaTime);
-        }
-
-
-        private void Jump()
-        {
-            if (!IsGrounded)
-            {
-                return;
-            }
-
-            verticalVelocity += jumpPower;
-        }
-
-        private void ApplyGravity()
-        {
-            if (IsGrounded && verticalVelocity < 0.0f)
-            {
-                verticalVelocity = -1f;
-            }
-            else
-            {
-                verticalVelocity += GameConfigs.Instance.Gravity * Time.deltaTime;
-            }
-        }
-
-        public void SetMoveSpeed(float moveSpeed)
-        {
-            this.moveSpeed = moveSpeed;
-        }
-
-        public void SetSprintSpeed(float sprintSpeed)
-        {
-            this.sprintSpeed = sprintSpeed;
-        }
-
-        public void SetJumpPower(float jumpPower)
-        {
-            this.jumpPower = jumpPower;
-        }
+    public void SetVerticalVelocity(float velocity) => verticalVelocity = velocity;
+    
+    
+    public void ChangeState(IMovementState newState)
+    {
+        stateMachine.SetState(newState, this);
     }
 }

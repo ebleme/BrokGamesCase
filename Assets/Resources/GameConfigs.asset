@@ -22,7 +22,9 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   sceneTransitionDuration: 1
+  gravity: -9.807
   interactableLayer:
     serializedVersion: 2
     m_Bits: 64
   interactableDistance: 100
+  playerPresetsLabel: PlayerPresets

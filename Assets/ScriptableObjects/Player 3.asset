@@ -24,4 +24,4 @@ MonoBehaviour:
   Id: Player 3
   moveSpeed: 8
   sprintSpeed: 16
-  jumpPower: 3
+  jumpPower: 1.5

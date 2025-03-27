@@ -40,6 +40,7 @@ namespace Ebleme.UI
 
         async void Start()
         {
+            presets = new List<PlayerPreset>();
             LoadAllAssetsByLabel(GameConfigs.Instance.PlayerPresetsLabel);
 
             Show();

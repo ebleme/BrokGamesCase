@@ -14,7 +14,7 @@ namespace Ebleme
         
         [FoldoutGroup("General Configs")]
         [SerializeField]
-        private float gravity = -9.07f;
+        private float gravity = -9.807f;
 
         
         [FoldoutGroup("Interactable")]
