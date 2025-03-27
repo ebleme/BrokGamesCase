@@ -5,6 +5,7 @@ using Ebleme.Interactables;
 using Ebleme.Models;
 using Ebleme.ScrictableObjects;
 using UnityEngine;
+using Zenject;
 
 namespace Ebleme
 {
@@ -22,7 +23,7 @@ namespace Ebleme
             var upgradeData = GameManager.Instance.GetPlayerUpgradeData(preset.Id);
 
             if (upgradeData == null)
-                upgradeData = new PlayerUpgradeData(GameManager.Instance.CurrentPlayerPreset.Id);
+                upgradeData = new PlayerUpgradeData(preset.Id);
             
             playerMovement.SetMoveSpeed(preset.moveSpeed * upgradeData.moveSpeedMultiplier);
             playerMovement.SetSprintSpeed(preset.sprintSpeed * upgradeData.sprintSpeedMultiplier);

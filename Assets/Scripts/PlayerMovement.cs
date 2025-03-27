@@ -1,4 +1,5 @@
 using UnityEngine;
+using Zenject;
 
 namespace Ebleme
 {
@@ -21,21 +22,24 @@ namespace Ebleme
 
 
         private CharacterController characterController;
-        private InputHandler inputHandler;
-        private GameObject mainCamera;
 
-        private void Awake()
+        private InputHandler inputHandler;
+        
+        [Inject]
+        private void Construct(InputHandler inputHandler)
         {
-            if (mainCamera == null)
-                mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
+            this.inputHandler = inputHandler;
+
+            Debug.Log("zenject setup");
         }
+        
 
         private void Start()
         {
             characterController = GetComponent<CharacterController>();
-            
+
             // Todo: User inject
-            inputHandler = FindFirstObjectByType<InputHandler>();
+            // inputHandler = FindFirstObjectByType<InputHandler>();
 
             inputHandler.OnJumpPressed += Jump;
         }
@@ -53,7 +57,7 @@ namespace Ebleme
         }
 
         private bool IsGrounded => characterController.isGrounded;
-        
+
         // private void GroundedCheck()
         // {
         //     // set sphere position, with offset
@@ -123,17 +127,17 @@ namespace Ebleme
                 verticalVelocity += gravity * Time.deltaTime;
             }
         }
-        
+
         public void SetMoveSpeed(float moveSpeed)
         {
             this.moveSpeed = moveSpeed;
         }
-        
+
         public void SetSprintSpeed(float sprintSpeed)
         {
             this.sprintSpeed = sprintSpeed;
         }
-        
+
         public void SetJumpPower(float jumpPower)
         {
             this.jumpPower = jumpPower;

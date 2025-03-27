@@ -7,6 +7,8 @@ using Ebleme.ScrictableObjects;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
+using Zenject;
+using Zenject.SpaceFighter;
 
 namespace Ebleme.UI
 {
@@ -14,7 +16,7 @@ namespace Ebleme.UI
     {
         [SerializeField]
         private PlayerTile tilePrefab;
-        
+
         [SerializeField]
         private Transform content;
 
@@ -23,15 +25,23 @@ namespace Ebleme.UI
 
         [SerializeField]
         private CanvasGroup canvasGroup;
-        
-        
+
+
         private List<PlayerPreset> presets;
+
+        private PlayerSpawner playerSpawner;
+
+        [Inject]
+        private void Construct(PlayerSpawner enemySpawner)
+        {
+            this.playerSpawner = enemySpawner;
+        }
 
         void Start()
         {
             presets = new List<PlayerPreset>();
             LoadAllAssetsByLabel(GameConfigs.Instance.PlayerPresetsLabel);
-            
+
             Show();
         }
 
@@ -41,7 +51,7 @@ namespace Ebleme.UI
             canvas.gameObject.SetActive(true);
 
             canvasGroup.DOFade(1, 0.25f);
-            
+
             GameManager.Instance.SetCursorState(false);
         }
 
@@ -64,7 +74,7 @@ namespace Ebleme.UI
                 {
                     int totalAssets = handle.Result.Count;
                     int loadedCount = 0;
-                    
+
                     foreach (var location in handle.Result)
                     {
                         Addressables.LoadAssetAsync<PlayerPreset>(location).Completed += assetHandle =>
@@ -72,7 +82,7 @@ namespace Ebleme.UI
                             if (assetHandle.Status == AsyncOperationStatus.Succeeded)
                             {
                                 presets.Add(assetHandle.Result);
-                                
+
                                 loadedCount++;
 
                                 // Tüm assetler yüklendiğinde event'i çağır.
@@ -91,7 +101,7 @@ namespace Ebleme.UI
         {
             foreach (Transform c in content)
                 Destroy(c.gameObject);
-            
+
             foreach (var preset in presets)
             {
                 var tile = Instantiate(tilePrefab, content);
@@ -103,8 +113,7 @@ namespace Ebleme.UI
         {
             Debug.Log($"Choosed: {preset.Id}");
 
-           GameManager.Instance.SetCurrentPlayer(preset, Hide);
-
+            playerSpawner.Spawn(preset, Hide);
         }
     }
 }

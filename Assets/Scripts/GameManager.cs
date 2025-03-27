@@ -19,8 +19,8 @@ namespace Ebleme
         [SerializeField]
         private CinemachineCamera cinemachineCamera;
 
-        public Player CurrentPlayer { get; private set; }
-        public PlayerPreset CurrentPlayerPreset { get; private set; }
+        public Player CurrentPlayer { get; set; }
+        public PlayerPreset CurrentPlayerPreset { get; set; }
         // public bool cursorLocked = true;
 
         protected override void Awake()
@@ -43,33 +43,38 @@ namespace Ebleme
             Cursor.lockState = isLocked ? CursorLockMode.Locked : CursorLockMode.None;
         }
 
-        public void SetCurrentPlayer(PlayerPreset playerPreset, Action onLoaded)
+        // public void SetCurrentPlayer(PlayerPreset playerPreset, Action onLoaded)
+        // {
+        //     Addressables.LoadAssetAsync<GameObject>(playerPreset.Id).Completed += handle =>
+        //     {
+        //         if (handle.Status == AsyncOperationStatus.Succeeded)
+        //         {
+        //             var pos = Vector3.zero;
+        //             if (CurrentPlayer != null)
+        //             {
+        //                 pos = CurrentPlayer.transform.position;
+        //                 Destroy(CurrentPlayer.gameObject);
+        //             }
+        //
+        //             SetCursorState(true);
+        //             var newPlayer = Instantiate(handle.Result);
+        //             newPlayer.transform.position = pos;
+        //             
+        //             CurrentPlayerPreset = playerPreset;
+        //             
+        //             CurrentPlayer = newPlayer.GetComponent<Player>();
+        //             SetCurrentPlayerData();
+        //
+        //             SetCinemachineFollowTarget(CurrentPlayer.CameraFollowPoint);
+        //
+        //             onLoaded?.Invoke();
+        //         }
+        //     };
+        // }
+
+        public void SetCinemachineFollowTarget(Transform followTarget)
         {
-            Addressables.LoadAssetAsync<GameObject>(playerPreset.Id).Completed += handle =>
-            {
-                if (handle.Status == AsyncOperationStatus.Succeeded)
-                {
-                    var pos = Vector3.zero;
-                    if (CurrentPlayer != null)
-                    {
-                        pos = CurrentPlayer.transform.position;
-                        Destroy(CurrentPlayer.gameObject);
-                    }
-
-                    SetCursorState(true);
-                    var newPlayer = Instantiate(handle.Result);
-                    newPlayer.transform.position = pos;
-                    
-                    CurrentPlayerPreset = playerPreset;
-                    
-                    CurrentPlayer = newPlayer.GetComponent<Player>();
-                    SetCurrentPlayerData();
-
-                    cinemachineCamera.Target.TrackingTarget = CurrentPlayer.CameraFollowPoint;
-
-                    onLoaded?.Invoke();
-                }
-            };
+            cinemachineCamera.Target.TrackingTarget = followTarget;
         }
 
         /// <summary>
